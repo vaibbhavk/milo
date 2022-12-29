@@ -7,3 +7,7 @@ Create and track milestones for any task.
 **Client:** React, MUI
 
 **Server:** Firebase
+
+## Author
+
+- [@vaibbhavk](https://www.github.com/vaibbhavk)
