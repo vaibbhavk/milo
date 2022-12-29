@@ -1,3 +1,9 @@
-# Milo (React app)
+# Milo
 
-## Create and Track milestones for any task.
+Create and track milestones for any task.
+
+## Tech Stack
+
+**Client:** React, MUI
+
+**Server:** Firebase
