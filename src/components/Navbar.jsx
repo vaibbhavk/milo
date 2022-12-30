@@ -42,7 +42,7 @@ const Navbar = ({ user }) => {
   };
 
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" sx={{ backgroundColor: "white" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box
@@ -53,7 +53,7 @@ const Navbar = ({ user }) => {
               marginRight: "40px",
             }}
           >
-            <img src="/logo.png" alt="logo" />
+            <img src="/logo.jpeg" alt="logo" />
           </Box>
           <Typography
             variant="h6"
@@ -67,7 +67,6 @@ const Navbar = ({ user }) => {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
               textDecoration: "none",
             }}
           >
@@ -82,7 +81,7 @@ const Navbar = ({ user }) => {
               marginRight: "24px",
             }}
           >
-            <img src="/logo.png" alt="logo" />
+            <img src="/logo.jpeg" alt="logo" />
           </Box>
           <Typography
             variant="h5"
@@ -96,7 +95,6 @@ const Navbar = ({ user }) => {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
               textDecoration: "none",
             }}
           >

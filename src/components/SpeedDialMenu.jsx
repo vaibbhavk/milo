@@ -42,6 +42,14 @@ const SpeedDialMenu = ({ user }) => {
         onClose={handleClose}
         onOpen={handleOpen}
         open={open}
+        FabProps={{
+          sx: {
+            bgcolor: "#F39766",
+            "&:hover": {
+              bgcolor: "#F39766",
+            },
+          },
+        }}
       >
         {actions.map((action) => (
           <SpeedDialAction
