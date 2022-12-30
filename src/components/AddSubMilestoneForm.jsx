@@ -52,9 +52,9 @@ const MenuProps = {
   },
 };
 
-const AddMilestoneForm = ({
-  milestoneModalOpen,
-  setMilestoneModalOpen,
+const AddSubMilestoneForm = ({
+  subMilestoneModalOpen,
+  setSubMilestoneModalOpen,
   user,
 }) => {
   const [snackOpen, setSnackOpen] = useState(false);
@@ -71,63 +71,63 @@ const AddMilestoneForm = ({
 
   const [nameText, setNameText] = useState("");
 
-  const [agenda, setAgenda] = useState("");
+  const [milestone, setMilestone] = useState("");
 
-  const [agendas, setAgendas] = useState([]);
+  const [milestones, setMilestones] = useState([]);
 
   const handleNameTextChange = (e) => {
     setNameText(e.target.value);
   };
 
   const handleCancelButtonClick = () => {
-    setMilestoneModalOpen(false);
-    setAgenda("");
+    setSubMilestoneModalOpen(false);
+    setMilestone("");
     setNameText("");
   };
 
   const handleSaveButtonClick = async (e) => {
     e.preventDefault();
 
-    console.log(nameText, agenda);
+    console.log(nameText, milestone);
 
-    // add milestone to db
+    // add sub milestone to db
 
     const data = {
       name: nameText,
       user: user.uid,
       done: false,
-      agenda: agenda,
+      milestone: milestone,
     };
 
-    const docRef = await addDoc(collection(db, "Milestone"), data);
+    const docRef = await addDoc(collection(db, "SubMilestone"), data);
     console.log("Document written with ID: ", docRef.id);
 
     setNameText("");
-    setAgenda("");
-    setMilestoneModalOpen(false);
+    setMilestone("");
+    setSubMilestoneModalOpen(false);
   };
 
-  const getAgendas = () => {
-    const q = query(collection(db, "Agenda"), where("user", "==", user.uid));
+  const getMilestones = () => {
+    const q = query(collection(db, "Milestone"), where("user", "==", user.uid));
 
     onSnapshot(q, (querySnapshot) => {
-      const agendasArray = [];
+      const milestonesArray = [];
       querySnapshot.forEach((doc) => {
-        agendasArray.push({ ...doc.data(), id: doc.id });
+        milestonesArray.push({ ...doc.data(), id: doc.id });
       });
 
-      setAgendas(agendasArray);
+      setMilestones(milestonesArray);
     });
   };
 
   useEffect(() => {
-    if (milestoneModalOpen) {
-      getAgendas();
+    if (subMilestoneModalOpen) {
+      getMilestones();
     }
-  }, [milestoneModalOpen]);
+  }, [subMilestoneModalOpen]);
 
-  const handleAgendaChange = (event) => {
-    setAgenda(event.target.value);
+  const handleMilestoneChange = (event) => {
+    setMilestone(event.target.value);
   };
 
   return (
@@ -146,14 +146,14 @@ const AddMilestoneForm = ({
         </Alert>
       </Snackbar>
       <Modal
-        open={milestoneModalOpen}
+        open={subMilestoneModalOpen}
         onClose={doNothing}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={modalStyle} component="form" onSubmit={handleSaveButtonClick}>
           <Typography id="modal-title" gutterBottom variant="h6" component="h2">
-            Add a milestone
+            Add a sub-milestone
           </Typography>
 
           <Divider />
@@ -164,21 +164,21 @@ const AddMilestoneForm = ({
               marginTop: "30px",
             }}
           >
-            Select an agenda
+            Select a milestone
           </InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={agenda}
-            onChange={handleAgendaChange}
+            value={milestone}
+            onChange={handleMilestoneChange}
             sx={{
               marginBottom: "10px",
             }}
           >
-            {agendas.length > 0 &&
-              agendas.map((a) => (
-                <MenuItem value={a.id} key={a.id}>
-                  {a.name}
+            {milestones.length > 0 &&
+              milestones.map((m) => (
+                <MenuItem value={m.id} key={m.id}>
+                  {m.name}
                 </MenuItem>
               ))}
           </Select>
@@ -227,4 +227,4 @@ const AddMilestoneForm = ({
   );
 };
 
-export default AddMilestoneForm;
+export default AddSubMilestoneForm;

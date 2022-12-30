@@ -7,9 +7,10 @@ import AddAgendaForm from "./AddAgendaForm";
 import AddMilestoneForm from "./AddMilestoneForm";
 
 import { useState } from "react";
+import AddSubMilestoneForm from "./AddSubMilestoneForm";
 
 const actions = [
-  { id: 1, icon: <AddIcon />, name: "Tag" },
+  { id: 1, icon: <AddIcon />, name: "Sub-Milestone" },
   { id: 2, icon: <AddIcon />, name: "Milestone" },
   { id: 3, icon: <AddIcon />, name: "Agenda" },
 ];
@@ -24,7 +25,7 @@ const speedDialMenuStyle = {
 };
 
 const SpeedDialMenu = ({ user }) => {
-  const [tagModalOpen, setTagModalOpen] = useState(false);
+  const [subMilestoneModalOpen, setSubMilestoneModalOpen] = useState(false);
   const [milestoneModalOpen, setMilestoneModalOpen] = useState(false);
   const [agendaModalOpen, setAgendaModalOpen] = useState(false);
 
@@ -49,7 +50,7 @@ const SpeedDialMenu = ({ user }) => {
             tooltipTitle={action.name}
             tooltipOpen
             onClick={(e) => {
-              if (action.id === 1) setTagModalOpen(true);
+              if (action.id === 1) setSubMilestoneModalOpen(true);
               else if (action.id === 2) setMilestoneModalOpen(true);
               else setAgendaModalOpen(true);
             }}
@@ -66,6 +67,12 @@ const SpeedDialMenu = ({ user }) => {
       <AddAgendaForm
         agendaModalOpen={agendaModalOpen}
         setAgendaModalOpen={setAgendaModalOpen}
+        user={user}
+      />
+
+      <AddSubMilestoneForm
+        subMilestoneModalOpen={subMilestoneModalOpen}
+        setSubMilestoneModalOpen={setSubMilestoneModalOpen}
         user={user}
       />
     </>

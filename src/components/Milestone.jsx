@@ -10,16 +10,20 @@ const Milestone = ({ m, subMilestones }) => {
   useEffect(() => {
     const filtered = subMilestones.filter((sm) => m.id === sm.milestone);
 
+    let result = true;
+
     if (filtered.length === 0) {
       return setChecked(false);
     } else {
       filtered.forEach((f) => {
         if (!f.done) {
-          return setChecked(false);
+          result = false;
         }
       });
     }
-  }, []);
+
+    return setChecked(result);
+  }, [subMilestones]);
 
   const handleChange1 = (event) => {
     setChecked([event.target.checked, event.target.checked]);
