@@ -3,9 +3,19 @@ import SubMilestone from "./SubMilestone";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { useEffect, useState } from "react";
+import { db } from "../firebase";
+import { doc, updateDoc } from "firebase/firestore";
 
 const Milestone = ({ m, subMilestones }) => {
   const [checked, setChecked] = useState(true);
+
+  const updateSubMilestone = async (value, id) => {
+    const milestoneRef = doc(db, "Milestone", id);
+
+    await updateDoc(milestoneRef, {
+      done: value,
+    });
+  };
 
   useEffect(() => {
     const filtered = subMilestones.filter((sm) => m.id === sm.milestone);
@@ -13,7 +23,7 @@ const Milestone = ({ m, subMilestones }) => {
     let result = true;
 
     if (filtered.length === 0) {
-      return setChecked(false);
+      result = false;
     } else {
       filtered.forEach((f) => {
         if (!f.done) {
@@ -22,8 +32,10 @@ const Milestone = ({ m, subMilestones }) => {
       });
     }
 
-    return setChecked(result);
-  }, [subMilestones]);
+    updateSubMilestone(result, m.id);
+
+    // return setChecked(result);
+  }, [m, subMilestones]);
 
   const handleChange1 = (event) => {
     setChecked([event.target.checked, event.target.checked]);
@@ -54,7 +66,7 @@ const Milestone = ({ m, subMilestones }) => {
     <Box component="div" sx={{ marginLeft: "32px" }}>
       <FormControlLabel
         label={m.name}
-        control={<Checkbox checked={checked} />}
+        control={<Checkbox checked={m.done} />}
       />
       <Box component="div" sx={{ marginLeft: "32px" }}>
         {subMilestones &&
