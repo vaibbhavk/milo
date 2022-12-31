@@ -78,7 +78,11 @@ const AddAgendaForm = ({ agendaModalOpen, setAgendaModalOpen, user }) => {
     console.log(user.uid);
     console.log(nameText);
 
-    const data = { name: nameText, user: user.uid };
+    const data = {
+      name: nameText,
+      user: user.uid,
+      timestamp: serverTimestamp(),
+    };
 
     const docRef = await addDoc(collection(db, "Agenda"), data);
     console.log("Document written with ID: ", docRef.id);

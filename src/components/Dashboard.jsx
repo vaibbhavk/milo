@@ -1,5 +1,11 @@
 import { Box, Paper } from "@mui/material";
-import { collection, query, where, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  orderBy,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../firebase";
 import Agenda from "./Agenda";
@@ -21,7 +27,11 @@ const Dashboard = ({ user }) => {
   const [subMilestones, setSubMilestones] = useState(null);
 
   useEffect(() => {
-    const q = query(collection(db, "Agenda"), where("user", "==", user.uid));
+    const q = query(
+      collection(db, "Agenda"),
+      where("user", "==", user.uid),
+      orderBy("timestamp", "desc")
+    );
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const agendaList = [];
       querySnapshot.forEach((doc) => {

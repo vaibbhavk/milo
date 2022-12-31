@@ -25,7 +25,7 @@ import {
 import { db } from "../firebase";
 
 import { useState, useEffect } from "react";
-import { IconButton, InputLabel } from "@mui/material";
+import { IconButton, InputLabel, Tooltip } from "@mui/material";
 import { AddIcCallRounded } from "@mui/icons-material";
 
 const modalStyle = {
@@ -109,16 +109,18 @@ const AddSubMilestoneForm = ({
     const batch = writeBatch(db);
 
     numInputs.forEach((input, index) => {
-      const docRef = doc(collection(db, "SubMilestone"));
+      if (textInputs[index] !== "") {
+        const docRef = doc(collection(db, "SubMilestone"));
 
-      const data = {
-        name: textInputs[index],
-        user: user.uid,
-        done: false,
-        milestone: milestone,
-      };
+        const data = {
+          name: textInputs[index],
+          user: user.uid,
+          done: false,
+          milestone: milestone,
+        };
 
-      batch.set(docRef, data);
+        batch.set(docRef, data);
+      }
     });
 
     batch
@@ -227,9 +229,11 @@ const AddSubMilestoneForm = ({
           ))}
 
           {numInputs.length < 5 && (
-            <IconButton onClick={(e) => handleAddInputButtonClick(e)}>
-              <AddIcon fontSize="large" />
-            </IconButton>
+            <Tooltip title="Add more" sx={{ marginTop: "10px" }}>
+              <IconButton onClick={(e) => handleAddInputButtonClick(e)}>
+                <AddIcon fontSize="large" />
+              </IconButton>
+            </Tooltip>
           )}
 
           <Divider sx={{ marginTop: "30px" }} />
