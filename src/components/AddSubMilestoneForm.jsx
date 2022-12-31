@@ -8,6 +8,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Alert from "@mui/material/Alert";
+import AddIcon from "@mui/icons-material/Add";
 import Snackbar from "@mui/material/Snackbar";
 
 import {
@@ -24,7 +25,8 @@ import {
 import { db } from "../firebase";
 
 import { useState, useEffect } from "react";
-import { InputLabel } from "@mui/material";
+import { IconButton, InputLabel } from "@mui/material";
+import { AddIcCallRounded } from "@mui/icons-material";
 
 const modalStyle = {
   position: "absolute",
@@ -75,8 +77,24 @@ const AddSubMilestoneForm = ({
 
   const [milestones, setMilestones] = useState([]);
 
+  const [textInputs, setTextInputs] = useState({ 0: "" });
+
+  const [numInputs, setNumInputs] = useState([0]);
+
   const handleNameTextChange = (e) => {
     setNameText(e.target.value);
+  };
+
+  const handleNameTextInputChange = (e, index) => {
+    setTextInputs({
+      ...textInputs,
+      [index]: e.target.value,
+    });
+  };
+
+  const handleAddInputButtonClick = (e) => {
+    setNumInputs([...numInputs, 0]);
+    setTextInputs({ ...textInputs, [numInputs.length]: "" });
   };
 
   const handleCancelButtonClick = () => {
@@ -88,23 +106,33 @@ const AddSubMilestoneForm = ({
   const handleSaveButtonClick = async (e) => {
     e.preventDefault();
 
-    console.log(nameText, milestone);
+    const batch = writeBatch(db);
 
-    // add sub milestone to db
+    numInputs.forEach((input, index) => {
+      const docRef = doc(collection(db, "SubMilestone"));
 
-    const data = {
-      name: nameText,
-      user: user.uid,
-      done: false,
-      milestone: milestone,
-    };
+      const data = {
+        name: textInputs[index],
+        user: user.uid,
+        done: false,
+        milestone: milestone,
+      };
 
-    const docRef = await addDoc(collection(db, "SubMilestone"), data);
-    console.log("Document written with ID: ", docRef.id);
+      batch.set(docRef, data);
+    });
 
-    setNameText("");
-    setMilestone("");
-    setSubMilestoneModalOpen(false);
+    batch
+      .commit()
+      .then(() => {
+        setMilestone("");
+        setTextInputs({ 0: "" });
+        setNumInputs([0]);
+        setSubMilestoneModalOpen(false);
+      })
+      .catch((e) => {
+        alert("Could not add new milestones");
+        return;
+      });
   };
 
   const getMilestones = () => {
@@ -183,19 +211,28 @@ const AddSubMilestoneForm = ({
               ))}
           </Select>
 
-          <TextField
-            id="standard-basic"
-            label="Name"
-            variant="outlined"
-            value={nameText}
-            onChange={handleNameTextChange}
-            sx={{
-              margin: "10px 0px 30px 0px",
-            }}
-            required
-          />
+          {numInputs.map((input, index) => (
+            <TextField
+              key={index}
+              sx={{
+                marginTop: "10px",
+              }}
+              id="standard-basic"
+              label="Name"
+              variant="outlined"
+              value={textInputs[index]}
+              onChange={(e) => handleNameTextInputChange(e, index)}
+              required
+            />
+          ))}
 
-          <Divider />
+          {numInputs.length < 5 && (
+            <IconButton onClick={(e) => handleAddInputButtonClick(e)}>
+              <AddIcon fontSize="large" />
+            </IconButton>
+          )}
+
+          <Divider sx={{ marginTop: "30px" }} />
 
           <Box
             sx={{
