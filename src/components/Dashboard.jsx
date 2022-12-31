@@ -41,7 +41,6 @@ const Dashboard = ({ user }) => {
           id: doc.id,
         });
       });
-      // console.log(agendaList);
       setAgendas(agendaList);
     });
 
@@ -78,7 +77,6 @@ const Dashboard = ({ user }) => {
           done: doc.data().done,
         });
       });
-      // console.log(subMilestoneList);
       setSubMilestones(subMilestoneList);
     });
   }, []);

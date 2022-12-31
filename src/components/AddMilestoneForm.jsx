@@ -88,8 +88,6 @@ const AddMilestoneForm = ({
   const handleSaveButtonClick = async (e) => {
     e.preventDefault();
 
-    console.log(nameText, agenda);
-
     // add milestone to db
 
     const data = {
@@ -100,7 +98,6 @@ const AddMilestoneForm = ({
     };
 
     const docRef = await addDoc(collection(db, "Milestone"), data);
-    console.log("Document written with ID: ", docRef.id);
 
     setNameText("");
     setAgenda("");

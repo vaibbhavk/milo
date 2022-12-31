@@ -16,7 +16,6 @@ const App = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
-        console.log(user);
         setLoading(false);
       } else {
         setUser(null);

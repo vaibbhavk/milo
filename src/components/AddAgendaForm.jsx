@@ -75,8 +75,6 @@ const AddAgendaForm = ({ agendaModalOpen, setAgendaModalOpen, user }) => {
     e.preventDefault();
 
     // add agenda to db
-    console.log(user.uid);
-    console.log(nameText);
 
     const data = {
       name: nameText,
@@ -85,7 +83,6 @@ const AddAgendaForm = ({ agendaModalOpen, setAgendaModalOpen, user }) => {
     };
 
     const docRef = await addDoc(collection(db, "Agenda"), data);
-    console.log("Document written with ID: ", docRef.id);
 
     setNameText("");
     setAgendaModalOpen(false);
